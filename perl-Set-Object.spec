@@ -4,16 +4,16 @@
 #
 Name     : perl-Set-Object
 Version  : 1.39
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.39.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.39.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libset-object-perl/libset-object-perl_1.39-1.debian.tar.xz
 Summary  : 'Unordered collections (sets) of Perl Objects'
 Group    : Development/Tools
 License  : Artistic-2.0
-Requires: perl-Set-Object-lib
-Requires: perl-Set-Object-license
-Requires: perl-Set-Object-man
+Requires: perl-Set-Object-lib = %{version}-%{release}
+Requires: perl-Set-Object-license = %{version}-%{release}
+BuildRequires : buildreq-cpan
 
 %description
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -21,10 +21,20 @@ Set::Object provides efficient sets,
 unordered collections of Perl objects without duplicates
 for scalars and references.
 
+%package dev
+Summary: dev components for the perl-Set-Object package.
+Group: Development
+Requires: perl-Set-Object-lib = %{version}-%{release}
+Provides: perl-Set-Object-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-Set-Object package.
+
+
 %package lib
 Summary: lib components for the perl-Set-Object package.
 Group: Libraries
-Requires: perl-Set-Object-license
+Requires: perl-Set-Object-license = %{version}-%{release}
 
 %description lib
 lib components for the perl-Set-Object package.
@@ -38,19 +48,11 @@ Group: Default
 license components for the perl-Set-Object package.
 
 
-%package man
-Summary: man components for the perl-Set-Object package.
-Group: Default
-
-%description man
-man components for the perl-Set-Object package.
-
-
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n Set-Object-1.39
-mkdir -p %{_topdir}/BUILD/Set-Object-1.39/deblicense/
+cd ..
+%setup -q -T -D -n Set-Object-1.39 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Set-Object-1.39/deblicense/
 
 %build
@@ -75,12 +77,12 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/perl-Set-Object
-cp LICENSE %{buildroot}/usr/share/doc/perl-Set-Object/LICENSE
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-Set-Object
+cp LICENSE %{buildroot}/usr/share/package-licenses/perl-Set-Object/LICENSE
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -89,20 +91,20 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/Set/Object.pm
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/Set/Object/Weak.pm
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/auto/Set/Object/autosplit.ix
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/Set/Object.pm
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/Set/Object/Weak.pm
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/auto/Set/Object/autosplit.ix
 
-%files lib
-%defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/auto/Set/Object/Object.so
-
-%files license
-%defattr(-,root,root,-)
-/usr/share/doc/perl-Set-Object/LICENSE
-
-%files man
+%files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/Set::Changes.3
 /usr/share/man/man3/Set::Object.3
 /usr/share/man/man3/Set::Object::Weak.3
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/auto/Set/Object/Object.so
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-Set-Object/LICENSE
