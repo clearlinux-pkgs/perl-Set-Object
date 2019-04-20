@@ -4,7 +4,7 @@
 #
 Name     : perl-Set-Object
 Version  : 1.39
-Release  : 9
+Release  : 10
 URL      : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.39.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.39.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libset-object-perl/libset-object-perl_1.39-1.debian.tar.xz
