@@ -4,15 +4,15 @@
 #
 Name     : perl-Set-Object
 Version  : 1.39
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.39.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.39.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libset-object-perl/libset-object-perl_1.39-1.debian.tar.xz
 Summary  : 'Unordered collections (sets) of Perl Objects'
 Group    : Development/Tools
-License  : Artistic-2.0
-Requires: perl-Set-Object-lib = %{version}-%{release}
+License  : Artistic-1.0 Artistic-2.0 GPL-1.0
 Requires: perl-Set-Object-license = %{version}-%{release}
+Requires: perl-Set-Object-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 
 %description
@@ -24,20 +24,11 @@ for scalars and references.
 %package dev
 Summary: dev components for the perl-Set-Object package.
 Group: Development
-Requires: perl-Set-Object-lib = %{version}-%{release}
 Provides: perl-Set-Object-devel = %{version}-%{release}
+Requires: perl-Set-Object = %{version}-%{release}
 
 %description dev
 dev components for the perl-Set-Object package.
-
-
-%package lib
-Summary: lib components for the perl-Set-Object package.
-Group: Libraries
-Requires: perl-Set-Object-license = %{version}-%{release}
-
-%description lib
-lib components for the perl-Set-Object package.
 
 
 %package license
@@ -48,18 +39,28 @@ Group: Default
 license components for the perl-Set-Object package.
 
 
+%package perl
+Summary: perl components for the perl-Set-Object package.
+Group: Default
+Requires: perl-Set-Object = %{version}-%{release}
+
+%description perl
+perl components for the perl-Set-Object package.
+
+
 %prep
 %setup -q -n Set-Object-1.39
-cd ..
-%setup -q -T -D -n Set-Object-1.39 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libset-object-perl_1.39-1.debian.tar.xz
+cd %{_builddir}/Set-Object-1.39
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Set-Object-1.39/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/Set-Object-1.39/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -69,7 +70,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -78,7 +79,8 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Set-Object
-cp LICENSE %{buildroot}/usr/share/package-licenses/perl-Set-Object/LICENSE
+cp %{_builddir}/Set-Object-1.39/LICENSE %{buildroot}/usr/share/package-licenses/perl-Set-Object/555574ecd72fc31417309a60e8c708af93ef4e8c
+cp %{_builddir}/Set-Object-1.39/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Set-Object/5c32525a8d3005cf0cf7f887f11df2067213be92
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -91,9 +93,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/Set/Object.pm
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/Set/Object/Weak.pm
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/auto/Set/Object/autosplit.ix
 
 %files dev
 %defattr(-,root,root,-)
@@ -101,10 +100,14 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 /usr/share/man/man3/Set::Object.3
 /usr/share/man/man3/Set::Object::Weak.3
 
-%files lib
-%defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/auto/Set/Object/Object.so
-
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/perl-Set-Object/LICENSE
+/usr/share/package-licenses/perl-Set-Object/555574ecd72fc31417309a60e8c708af93ef4e8c
+/usr/share/package-licenses/perl-Set-Object/5c32525a8d3005cf0cf7f887f11df2067213be92
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/Set/Object.pm
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/Set/Object/Weak.pm
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/auto/Set/Object/Object.so
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/auto/Set/Object/autosplit.ix
