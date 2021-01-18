@@ -10,7 +10,7 @@ Source0  : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.41.tar.
 Source1  : http://http.debian.net/debian/pool/main/libs/libset-object-perl/libset-object-perl_1.39-1.debian.tar.xz
 Summary  : Unordered collections (sets) of Perl Objects
 Group    : Development/Tools
-License  : Artistic-1.0 Artistic-2.0 GPL-1.0
+License  : Artistic-1.0 Artistic-2.0 Artistic_2 GPL-1.0
 Requires: perl-Set-Object-license = %{version}-%{release}
 Requires: perl-Set-Object-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
