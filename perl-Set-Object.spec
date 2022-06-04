@@ -4,7 +4,7 @@
 #
 Name     : perl-Set-Object
 Version  : 1.42
-Release  : 23
+Release  : 24
 URL      : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.42.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Set-Object-1.42.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libset-object-perl/libset-object-perl_1.39-1.debian.tar.xz
@@ -107,7 +107,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/Set/Object.pm
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/Set/Object/Weak.pm
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/auto/Set/Object/Object.so
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/auto/Set/Object/autosplit.ix
+/usr/lib/perl5/*
